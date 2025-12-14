@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Bell, X, Plus, Edit2, Trash2, Check } from 'lucide-react';
 
-const logo = `${import.meta.env.BASE_URL}logo_nrjt.png`;
+import logo from '../assets/logo_nrjt.png';
 
 const Header = ({ 
   isStudentMode, 

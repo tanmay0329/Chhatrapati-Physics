@@ -39,12 +39,12 @@ const Footer = () => {
         <div className="footer-section">
           <h3>Follow Us</h3>
           <div className="social-icons">
-            <a href="https://www.instagram.com/justdude_001?igsh=bHU1NW83eHMybDRp" className="social-icon"><Instagram size={20} /></a>
-            <a href="https://www.linkedin.com/in/tanmay-bora/" className="social-icon"><Linkedin size={20} /></a>
-            <a href="https://youtu.be/EPxFcE_JlE0?si=6FaHj_vPvWzyA54I" className="social-icon" target="_blank" rel="noopener noreferrer"><Youtube size={20} /></a>
-            <a href="#" className="social-icon"><Facebook size={20} /></a>
-            <a href="#" className="social-icon"><Twitter size={20} /></a>
-            <a href="https://github.com/tanmay0329" className="social-icon"><Github size={20} /></a>
+            <a href="https://www.instagram.com/justdude_001?igsh=bHU1NW83eHMybDRp" className="social-icon" target="_blank" rel="noopener noreferrer"><Instagram size={20} /></a>
+            <a href="https://www.linkedin.com/in/tanmay-bora/" className="social-icon" target="_blank" rel="noopener noreferrer"><Linkedin size={20} /></a>
+            <a href="https://www.youtube.com/@physicsbynikyya" className="social-icon" target="_blank" rel="noopener noreferrer"><Youtube size={20} /></a>
+            <a href="#" className="social-icon" target="_blank" rel="noopener noreferrer"><Facebook size={20} /></a>
+            <a href="#" className="social-icon" target="_blank" rel="noopener noreferrer"><Twitter size={20} /></a>
+            <a href="https://github.com/tanmay0329" className="social-icon" target="_blank" rel="noopener noreferrer"><Github size={20} /></a>
           </div>
         </div>
       </div>
