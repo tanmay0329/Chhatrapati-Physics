@@ -29,6 +29,13 @@ const ResourceSection = ({ type, resources = [], isAdmin = false, onEdit, onRena
     }
   };
 
+  const handleFileClick = (file, folderName) => {
+    // Construct the path to the file based on the folder structure
+    // Include the base URL for Vite
+    const filePath = `/NRJT-EDU-PLATFROM/9th/CBSE/${folderName}/${file.name}`;
+    window.open(filePath, '_blank');
+  };
+
   const startEdit = (folder, e) => {
     e.stopPropagation();
     setEditingFolder(folder);
@@ -146,7 +153,10 @@ const ResourceSection = ({ type, resources = [], isAdmin = false, onEdit, onRena
                           </button>
                         </div>
                       ) : (
-                        <button className="action-btn">
+                        <button 
+                          className="action-btn"
+                          onClick={() => handleFileClick(file, folder.folderName)}
+                        >
                           {isVideo ? 'Watch' : 'Read'}
                         </button>
                       )}
