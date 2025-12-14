@@ -1,5 +1,5 @@
 import React from 'react';
-import { Facebook, Twitter, Instagram, Linkedin, Github, Mail, Phone, MapPin } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Linkedin, Github, Youtube, Mail, Phone, MapPin } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -41,10 +41,10 @@ const Footer = () => {
           <div className="social-icons">
             <a href="https://www.instagram.com/justdude_001?igsh=bHU1NW83eHMybDRp" className="social-icon"><Instagram size={20} /></a>
             <a href="https://www.linkedin.com/in/tanmay-bora/" className="social-icon"><Linkedin size={20} /></a>
+            <a href="https://youtu.be/EPxFcE_JlE0?si=6FaHj_vPvWzyA54I" className="social-icon" target="_blank" rel="noopener noreferrer"><Youtube size={20} /></a>
             <a href="#" className="social-icon"><Facebook size={20} /></a>
             <a href="#" className="social-icon"><Twitter size={20} /></a>
             <a href="https://github.com/tanmay0329" className="social-icon"><Github size={20} /></a>
-            
           </div>
         </div>
       </div>
