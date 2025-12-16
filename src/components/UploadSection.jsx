@@ -23,7 +23,7 @@ const UploadSection = ({ type, onUpload }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (folderName) {
-      // Create a file object with necessary details only if a file is selected
+
       let fileData = null;
       
       if (selectedFile) {
@@ -32,20 +32,16 @@ const UploadSection = ({ type, onUpload }) => {
           size: (selectedFile.size / 1024 / 1024).toFixed(2) + ' MB',
           date: new Date().toLocaleDateString(),
           type: type,
-          link: referenceLink // Pass link with file if file exists
+          link: referenceLink
         };
       } else {
-        // If no file, we might still want to pass the link to associate with the folder
-        // We'll pass a "dummy" file object or handle it in App.jsx
-        // Actually, let's pass the link as a separate property or attached to a dummy object
-        // The App.jsx expects (folderName, file, type). 
-        // We can pass file as { link: referenceLink } if no actual file.
+
         fileData = { link: referenceLink };
       }
       
       onUpload(folderName, fileData);
       
-      // Reset state
+
       setFolderName('');
       setReferenceLink('');
       setSelectedFile(null);

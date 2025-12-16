@@ -16,13 +16,11 @@ function App() {
   const [activeBoard, setActiveBoard] = useState(structure[0].boards[0]);
   const [isStudentMode, setIsStudentMode] = useState(true);
   
-  // State for storing resources
-  // Structure: { [standardId]: { [board]: { [type]: [{ folderName, files: [] }] } } }
+
   const [resources, setResources] = useState(resourceData);
   const activeStandardData = structure.find(s => s.id === activeStandardId);
 
-  // Reset board when standard changes if the current board is not available in the new standard
-  // Although currently all standards have same boards, this is good for future proofing
+
   const handleStandardChange = (id) => {
     setActiveStandardId(id);
     const newStandard = structure.find(s => s.id === id);
@@ -31,25 +29,35 @@ function App() {
     }
   };
 
-  const [activeCategory, setActiveCategory] = useState(null); // 'video' | 'pdf' | null
+  const [activeCategory, setActiveCategory] = useState(null);
   console.log("rr:", resources);
-  // Announcements State - Load from localStorage on mount
+
   const [announcements, setAnnouncements] = useState(() => {
     const saved = localStorage.getItem('announcements');
+    const defaultAnnouncements = [
+      { id: 2, text: "The Journey Begins — My YouTube Channel Is Live 🎥", date: new Date().toLocaleDateString() },
+      { id: 1, text: "New courses for 2025 are now available! Enroll today.", date: new Date().toLocaleDateString() }
+    ];
+
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+
+        const hasNewAnnouncement = parsed.some(a => a.id === 2 || a.text.includes('Journey Begins'));
+        
+        if (!hasNewAnnouncement) {
+
+          return [defaultAnnouncements[0], ...parsed];
+        }
+        return parsed;
       } catch (e) {
         console.error('Failed to parse announcements from localStorage', e);
       }
     }
-    return [
-      { id: 2, text: "The Journey Begins — My YouTube Channel Is Live 🎥", date: new Date().toLocaleDateString() },
-      { id: 1, text: "New courses for 2025 are now available! Enroll today.", date: new Date().toLocaleDateString() }
-    ];
+    return defaultAnnouncements;
   });
 
-  // Save announcements to localStorage whenever they change
+
   useEffect(() => {
     localStorage.setItem('announcements', JSON.stringify(announcements));
   }, [announcements]);
@@ -73,7 +81,7 @@ function App() {
     setAnnouncements(announcements.filter(a => a.id !== id));
   };
 
-  // Reset category when switching modes or standards
+
   useEffect(() => {
     setActiveCategory(null);
   }, [isStudentMode, activeStandardId, activeBoard]);
@@ -87,10 +95,10 @@ function App() {
       const existingFolderIndex = typeResources.findIndex(f => f.folderName === folderName);
       let newTypeResources;
       
-      // Extract link from fileData if present
+
       const link = fileData?.link;
       
-      // Check if it's a real file upload or just folder creation
+
       const isRealFile = fileData && fileData.name;
 
       if (existingFolderIndex >= 0) {
@@ -98,12 +106,12 @@ function App() {
         
         const updatedFolder = { ...newTypeResources[existingFolderIndex] };
         
-        // Add file only if it's a real file
+
         if (isRealFile) {
           updatedFolder.files = [...updatedFolder.files, fileData];
         }
         
-        // Update link if provided
+
         if (link) {
           updatedFolder.link = link;
         }
@@ -218,11 +226,11 @@ function App() {
     });
   };
 
-  // Get current resources for display
+
   const currentResources = resources[activeStandardId]?.[activeBoard] || {};
 
   const renderContent = () => {
-    // Video Category
+
     if (activeCategory === 'video') {
       return (
         <div className="category-content">
@@ -246,7 +254,7 @@ function App() {
       );
     }
 
-    // PDF Category
+
     if (activeCategory === 'pdf') {
       return (
         <div className="category-content">
@@ -270,7 +278,7 @@ function App() {
       );
     }
 
-    // Category Selection (Cards)
+
     return (
       <div className="category-grid">
         <div className="category-card" onClick={() => setActiveCategory('video')}>

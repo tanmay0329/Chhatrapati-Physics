@@ -7,7 +7,6 @@ const ResourceSection = ({ type, resources = [], isAdmin = false, onEdit, onRena
   const [editFolderName, setEditFolderName] = useState('');
   const [editLink, setEditLink] = useState('');
 
-  // File editing state
   const [editingFile, setEditingFile] = useState(null);
   const [editFileName, setEditFileName] = useState('');
   const [activeFolderForFileEdit, setActiveFolderForFileEdit] = useState('');
@@ -30,14 +29,12 @@ const ResourceSection = ({ type, resources = [], isAdmin = false, onEdit, onRena
   };
 
   const handleFileClick = (file, folderName) => {
-    // If the file has a link property, open that link
+    
     if (file.link) {
       window.open(file.link, '_blank');
       return;
     }
     
-    // Otherwise, construct the path to the file based on the folder structure
-    // Include the base URL for Vite
     const filePath = `/NRJT-EDU-PLATFROM/9th/CBSE/${folderName}/${file.name}`;
     window.open(filePath, '_blank');
   };
@@ -183,7 +180,7 @@ const ResourceSection = ({ type, resources = [], isAdmin = false, onEdit, onRena
         ))}
       </div>
 
-      {/* Folder Edit Modal */}
+
       {editingFolder && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -230,7 +227,7 @@ const ResourceSection = ({ type, resources = [], isAdmin = false, onEdit, onRena
         </div>
       )}
 
-      {/* File Rename Modal */}
+
       {editingFile && (
         <div className="modal-overlay">
           <div className="modal-content">

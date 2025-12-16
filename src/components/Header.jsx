@@ -24,7 +24,7 @@ const Header = ({
     if (newAnnouncement.trim()) {
       onAddAnnouncement(newAnnouncement);
       setNewAnnouncement('');
-      setIsModalOpen(false); // Close modal after posting
+      setIsModalOpen(false);
     }
   };
 
