@@ -3,7 +3,7 @@ import { PlayCircle, BookOpen, ArrowRight, ArrowLeft } from 'lucide-react';
 import Header from './components/Header';
 import StandardTabs from './components/StandardTabs';
 import BoardTabs from './components/BoardTabs';
-import UploadSection from './components/UploadSection';
+
 import ResourceSection from './components/ResourceSection';
 import Footer from './components/Footer';
 import { structure } from './data/structure';
@@ -14,8 +14,7 @@ import resourceData from './resources.json';
 function App() {
   const [activeStandardId, setActiveStandardId] = useState(structure[0].id);
   const [activeBoard, setActiveBoard] = useState(structure[0].boards[0]);
-  const [isStudentMode, setIsStudentMode] = useState(true);
-  
+
 
   const [resources, setResources] = useState(resourceData);
   const activeStandardData = structure.find(s => s.id === activeStandardId);
@@ -39,7 +38,7 @@ function App() {
         id: 2, 
         text: "The Journey Begins — My YouTube Channel Is Live 🎥", 
         date: new Date().toLocaleDateString(),
-        link: "https://www.youtube.com/@physicsbynikyya"
+        link: "https://www.youtube.com/@chhatrapati.physics"
       },
       { id: 1, text: "New courses for 2025 are now available! Enroll today.", date: new Date().toLocaleDateString() }
     ];
@@ -73,222 +72,42 @@ function App() {
     localStorage.setItem('announcements', JSON.stringify(announcements));
   }, [announcements]);
 
-  const handleAddAnnouncement = (text) => {
-    const newAnnouncement = {
-      id: Date.now(),
-      text,
-      date: new Date().toLocaleDateString()
-    };
-    setAnnouncements([newAnnouncement, ...announcements]);
-  };
 
-  const handleEditAnnouncement = (id, newText) => {
-    setAnnouncements(announcements.map(a => 
-      a.id === id ? { ...a, text: newText } : a
-    ));
-  };
-
-  const handleDeleteAnnouncement = (id) => {
-    setAnnouncements(announcements.filter(a => a.id !== id));
-  };
 
 
   useEffect(() => {
     setActiveCategory(null);
-  }, [isStudentMode, activeStandardId, activeBoard]);
+  }, [activeStandardId, activeBoard]);
 
-  const handleUpload = (folderName, fileData, type) => {
-    setResources(prev => {
-      const standardResources = prev[activeStandardId] || {};
-      const boardResources = standardResources[activeBoard] || {};
-      const typeResources = boardResources[type] || [];
 
-      const existingFolderIndex = typeResources.findIndex(f => f.folderName === folderName);
-      let newTypeResources;
-      
-
-      const link = fileData?.link;
-      
-
-      const isRealFile = fileData && fileData.name;
-
-      if (existingFolderIndex >= 0) {
-        newTypeResources = [...typeResources];
-        
-        const updatedFolder = { ...newTypeResources[existingFolderIndex] };
-        
-
-        if (isRealFile) {
-          updatedFolder.files = [...updatedFolder.files, fileData];
-        }
-        
-
-        if (link) {
-          updatedFolder.link = link;
-        }
-        
-        newTypeResources[existingFolderIndex] = updatedFolder;
-      } else {
-        newTypeResources = [
-          ...typeResources,
-          { 
-            folderName, 
-            files: isRealFile ? [fileData] : [], 
-            link: link 
-          }
-        ];
-      }
-
-      return {
-        ...prev,
-        [activeStandardId]: {
-          ...standardResources,
-          [activeBoard]: {
-            ...boardResources,
-            [type]: newTypeResources
-          }
-        }
-      };
-    });
-  };
-
-  const handleEditFolder = (oldFolderName, newFolderName, newLink, type) => {
-    setResources(prev => {
-      const standardResources = prev[activeStandardId] || {};
-      const boardResources = standardResources[activeBoard] || {};
-      const typeResources = boardResources[type] || [];
-
-      const updatedTypeResources = typeResources.map(folder => {
-        if (folder.folderName === oldFolderName) {
-          return { ...folder, folderName: newFolderName, link: newLink };
-        }
-        return folder;
-      });
-
-      return {
-        ...prev,
-        [activeStandardId]: {
-          ...standardResources,
-          [activeBoard]: {
-            ...boardResources,
-            [type]: updatedTypeResources
-          }
-        }
-      };
-    });
-  };
-
-  const handleRenameFile = (folderName, oldFileName, newFileName, type) => {
-    setResources(prev => {
-      const standardResources = prev[activeStandardId] || {};
-      const boardResources = standardResources[activeBoard] || {};
-      const typeResources = boardResources[type] || [];
-
-      const updatedTypeResources = typeResources.map(folder => {
-        if (folder.folderName === folderName) {
-          const updatedFiles = folder.files.map(file => {
-            if (file.name === oldFileName) {
-              return { ...file, name: newFileName };
-            }
-            return file;
-          });
-          return { ...folder, files: updatedFiles };
-        }
-        return folder;
-      });
-
-      return {
-        ...prev,
-        [activeStandardId]: {
-          ...standardResources,
-          [activeBoard]: {
-            ...boardResources,
-            [type]: updatedTypeResources
-          }
-        }
-      };
-    });
-  };
-
-  const handleDeleteFile = (folderName, fileName, type) => {
-    setResources(prev => {
-      const standardResources = prev[activeStandardId] || {};
-      const boardResources = standardResources[activeBoard] || {};
-      const typeResources = boardResources[type] || [];
-
-      const updatedTypeResources = typeResources.map(folder => {
-        if (folder.folderName === folderName) {
-          const updatedFiles = folder.files.filter(file => file.name !== fileName);
-          return { ...folder, files: updatedFiles };
-        }
-        return folder;
-      });
-
-      return {
-        ...prev,
-        [activeStandardId]: {
-          ...standardResources,
-          [activeBoard]: {
-            ...boardResources,
-            [type]: updatedTypeResources
-          }
-        }
-      };
-    });
-  };
 
 
   const currentResources = resources[activeStandardId]?.[activeBoard] || {};
 
   const renderContent = () => {
-
     if (activeCategory === 'video') {
       return (
         <div className="category-content">
-          <h3>{isStudentMode ? 'Video Lectures' : 'Manage Videos'}</h3>
-          
-          {!isStudentMode && (
-            <UploadSection 
-              type="video" 
-              onUpload={(folder, file) => handleUpload(folder, file, 'video')}
-            />
-          )}
+          <h3>Video Lectures</h3>
           <ResourceSection 
             type="video" 
             resources={currentResources.video || []}
-            isAdmin={!isStudentMode}
-            onEdit={!isStudentMode ? (oldName, newName, link) => handleEditFolder(oldName, newName, link, 'video') : undefined}
-            onRenameFile={!isStudentMode ? (folder, oldName, newName) => handleRenameFile(folder, oldName, newName, 'video') : undefined}
-            onDeleteFile={!isStudentMode ? (folder, fileName) => handleDeleteFile(folder, fileName, 'video') : undefined}
           />
         </div>
       );
     }
-
 
     if (activeCategory === 'pdf') {
       return (
         <div className="category-content">
-          <h3>{isStudentMode ? 'Study Notes' : 'Manage PDFs'}</h3>
-          
-          {!isStudentMode && (
-            <UploadSection 
-              type="pdf" 
-              onUpload={(folder, file) => handleUpload(folder, file, 'pdf')}
-            />
-          )}
+          <h3>Study Notes</h3>
           <ResourceSection 
             type="pdf" 
             resources={currentResources.pdf || []}
-            isAdmin={!isStudentMode}
-            onEdit={!isStudentMode ? (oldName, newName, link) => handleEditFolder(oldName, newName, link, 'pdf') : undefined}
-            onRenameFile={!isStudentMode ? (folder, oldName, newName) => handleRenameFile(folder, oldName, newName, 'pdf') : undefined}
-            onDeleteFile={!isStudentMode ? (folder, fileName) => handleDeleteFile(folder, fileName, 'pdf') : undefined}
           />
         </div>
       );
     }
-
 
     return (
       <div className="category-grid">
@@ -296,20 +115,20 @@ function App() {
           <div className="category-icon">
             <PlayCircle size={48} />
           </div>
-          <h3>{isStudentMode ? 'Video Lectures' : 'Manage Videos'}</h3>
-          <p>{isStudentMode ? 'Watch high-quality video lectures' : 'Upload and manage video content'}</p>
+          <h3>Video Lectures</h3>
+          <p>Watch high-quality video lectures</p>
           <span className="category-action">
-            {isStudentMode ? 'Watch Now' : 'Manage'} <ArrowRight size={16} />
+            Watch Now <ArrowRight size={16} />
           </span>
         </div>
         <div className="category-card" onClick={() => setActiveCategory('pdf')}>
           <div className="category-icon">
             <BookOpen size={48} />
           </div>
-          <h3>{isStudentMode ? 'Study Notes' : 'Manage PDFs'}</h3>
-          <p>{isStudentMode ? 'Read comprehensive study materials' : 'Upload and manage PDF notes'}</p>
+          <h3>Study Notes</h3>
+          <p>Read comprehensive study materials</p>
           <span className="category-action">
-            {isStudentMode ? 'Read Now' : 'Manage'} <ArrowRight size={16} />
+            Read Now <ArrowRight size={16} />
           </span>
         </div>
       </div>
@@ -319,12 +138,7 @@ function App() {
   return (
     <div className="app-container">
       <Header 
-        isStudentMode={isStudentMode} 
-        onToggleMode={() => setIsStudentMode(!isStudentMode)}
         announcements={announcements}
-        onAddAnnouncement={handleAddAnnouncement}
-        onEditAnnouncement={handleEditAnnouncement}
-        onDeleteAnnouncement={handleDeleteAnnouncement}
       />
       
       <main className="main-content">
@@ -339,9 +153,7 @@ function App() {
             <h2>{activeStandardData?.label}</h2>
             {activeStandardData?.boards.length > 0 && (
               <p>
-                {isStudentMode 
-                  ? 'Select your board to view resources' 
-                  : 'Select your board to manage content'}
+                Select your board to view resources
               </p>
             )}
           </div>

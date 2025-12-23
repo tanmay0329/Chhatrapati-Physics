@@ -24,7 +24,7 @@ const Footer = () => {
           <h3>Contact Us</h3>
           <div className="contact-item">
             <Mail size={16} />
-            <span>tanmay.bora221@vit.edu</span>
+            <span>chhatrapatiphysics@gmail.com</span>
           </div>
           <div className="contact-item">
             <Phone size={16} />
@@ -41,7 +41,7 @@ const Footer = () => {
           <div className="social-icons">
             <a href="https://www.instagram.com/justdude_001?igsh=bHU1NW83eHMybDRp" className="social-icon" target="_blank" rel="noopener noreferrer"><Instagram size={20} /></a>
             <a href="https://www.linkedin.com/in/tanmay-bora/" className="social-icon" target="_blank" rel="noopener noreferrer"><Linkedin size={20} /></a>
-            <a href="https://www.youtube.com/@physicsbynikyya" className="social-icon" target="_blank" rel="noopener noreferrer"><Youtube size={20} /></a>
+            <a href="https://www.youtube.com/@chhatrapati.physics" className="social-icon" target="_blank" rel="noopener noreferrer"><Youtube size={20} /></a>
             <a href="#" className="social-icon" target="_blank" rel="noopener noreferrer"><Facebook size={20} /></a>
             <a href="#" className="social-icon" target="_blank" rel="noopener noreferrer"><Twitter size={20} /></a>
             <a href="https://github.com/tanmay0329" className="social-icon" target="_blank" rel="noopener noreferrer"><Github size={20} /></a>
