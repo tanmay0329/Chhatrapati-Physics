@@ -29,7 +29,7 @@ const ResourceSection = ({ type, resources = [] }) => {
       return;
     }
     
-    const filePath = `/NRJT-EDU-PLATFROM/9th/CBSE/${folderName}/${file.name}`;
+    const filePath = `/Chhatrapati-Physics/9th/CBSE/${folderName}/${file.name}`;
     window.open(filePath, '_blank');
   };
 
