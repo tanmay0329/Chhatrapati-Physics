@@ -92,6 +92,8 @@ function App() {
           <ResourceSection 
             type="video" 
             resources={currentResources.video || []}
+            standard={activeStandardId}
+            board={activeBoard}
           />
         </div>
       );
@@ -104,6 +106,8 @@ function App() {
           <ResourceSection 
             type="pdf" 
             resources={currentResources.pdf || []}
+            standard={activeStandardId}
+            board={activeBoard}
           />
         </div>
       );

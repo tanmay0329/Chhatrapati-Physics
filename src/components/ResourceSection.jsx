@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PlayCircle, BookOpen, Folder, ChevronDown, ChevronRight, File, Link as LinkIcon } from 'lucide-react';
 
-const ResourceSection = ({ type, resources = [] }) => {
+const ResourceSection = ({ type, resources = [], standard, board }) => {
   const [expandedFolders, setExpandedFolders] = useState({});
 
 
@@ -29,7 +29,12 @@ const ResourceSection = ({ type, resources = [] }) => {
       return;
     }
     
-    const filePath = `/NRJT-EDU-PLATFROM/9th/CBSE/${folderName}/${file.name}`;
+    // Construct path dynamically using base URL and current context
+    const baseUrl = import.meta.env.BASE_URL;
+    // Remove trailing slash from base url if present to avoid double slashes, though usually valid
+    const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+    
+    const filePath = `${cleanBaseUrl}${standard}/${board}/${folderName}/${file.name}`;
     window.open(filePath, '_blank');
   };
 
