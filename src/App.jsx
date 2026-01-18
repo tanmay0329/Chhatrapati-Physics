@@ -9,16 +9,21 @@ import Footer from './components/Footer';
 import { structure } from './data/structure';
 import './App.css';
 
-import resourceData from './resources.json';
+import { fetchSheetData, transformResources, transformAnnouncements } from './utils/googleSheets';
 
 function App() {
   const [activeStandardId, setActiveStandardId] = useState(structure[0].id);
   const [activeBoard, setActiveBoard] = useState(structure[0].boards[0]);
 
 
-  const [resources, setResources] = useState(resourceData);
-  const activeStandardData = structure.find(s => s.id === activeStandardId);
+  // Google Sheet URL from environment variables
+  const SHEET_CSV_URL = import.meta.env.VITE_GOOGLE_SHEET_URL;
+  
+  const RESOURCES_CSV_URL = SHEET_CSV_URL; 
+  const ANNOUNCEMENTS_CSV_URL = SHEET_CSV_URL;
 
+  const [resources, setResources] = useState({});
+  const [activeStandardData, setActiveStandardData] = useState(structure.find(s => s.id === activeStandardId));
 
   const handleStandardChange = (id) => {
     setActiveStandardId(id);
@@ -29,48 +34,40 @@ function App() {
   };
 
   const [activeCategory, setActiveCategory] = useState(null);
-  console.log("rr:", resources);
+  const [announcements, setAnnouncements] = useState([]);
 
-  const [announcements, setAnnouncements] = useState(() => {
-    const saved = localStorage.getItem('announcements');
-    const defaultAnnouncements = [
-      { 
-        id: 2, 
-        text: "The Journey Begins — My YouTube Channel Is Live 🎥", 
-        date: new Date().toLocaleDateString(),
-        link: "https://www.youtube.com/@chhatrapati.physics"
-      },
-      { id: 1, text: "New courses for 2025 are now available! Enroll today.", date: new Date().toLocaleDateString() }
-    ];
-
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-
-        // Update existing announcement if found
-        const updatedParsed = parsed.map(a => {
-          if (a.id === 2) {
-            return { ...a, link: "https://www.youtube.com/@chhatrapati.physics" };
-          }
-          return a;
-        });
-
-        const hasNewAnnouncement = updatedParsed.some(a => a.id === 2);
-        
-        if (!hasNewAnnouncement) {
-          return [defaultAnnouncements[0], ...updatedParsed];
-        }
-        return updatedParsed;
-      } catch (e) {
-        console.error('Failed to parse announcements from localStorage', e);
-      }
-    }
-    return defaultAnnouncements;
-  });
-
+  // Fetch data on mount
   useEffect(() => {
-    localStorage.setItem('announcements', JSON.stringify(announcements));
-  }, [announcements]);
+    const loadData = async () => {
+      try {
+        // Fetch Resources
+        // Only fetch if URL is set to something valid (not the placeholder default)
+        if (RESOURCES_CSV_URL && !RESOURCES_CSV_URL.includes('...')) {
+            const rawResources = await fetchSheetData(RESOURCES_CSV_URL);
+            const transformedResources = transformResources(rawResources);
+            // Merge with local resources or replace? detailed plan said replace.
+            // But for safety, let's mistakenly not break everything if fetch fails or is empty
+            if (Object.keys(transformedResources).length > 0) {
+                setResources(transformedResources);
+            }
+        }
+
+        // Fetch Announcements
+        if (ANNOUNCEMENTS_CSV_URL && !ANNOUNCEMENTS_CSV_URL.includes('...')) {
+            const rawAnnouncements = await fetchSheetData(ANNOUNCEMENTS_CSV_URL);
+            const transformedAnnouncements = transformAnnouncements(rawAnnouncements);
+            if (transformedAnnouncements.length > 0) {
+                setAnnouncements(transformedAnnouncements);
+            }
+        }
+      } catch (error) {
+        console.error("Failed to fetch data from sheets:", error);
+      }
+    };
+
+    loadData();
+  }, []);
+
 
 
 
