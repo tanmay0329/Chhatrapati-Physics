@@ -24,7 +24,7 @@ function App() {
   const ANNOUNCEMENTS_CSV_URL = SHEET_CSV_URL;
 
   const [resources, setResources] = useState({});
-  const [activeStandardData, setActiveStandardData] = useState(structure.find(s => s.id === activeStandardId));
+  const activeStandardData = structure.find(s => s.id === activeStandardId);
 
   const handleStandardChange = (id) => {
     setActiveStandardId(id);
