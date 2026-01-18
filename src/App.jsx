@@ -10,14 +10,15 @@ import { structure } from './data/structure';
 import './App.css';
 
 import { fetchSheetData, transformResources, transformAnnouncements } from './utils/googleSheets';
+import { GOOGLE_SHEET_URL } from './config';
 
 function App() {
   const [activeStandardId, setActiveStandardId] = useState(structure[0].id);
   const [activeBoard, setActiveBoard] = useState(structure[0].boards[0]);
 
 
-  // Google Sheet URL from environment variables
-  const SHEET_CSV_URL = import.meta.env.VITE_GOOGLE_SHEET_URL;
+  // Google Sheet URL from config.js
+  const SHEET_CSV_URL = GOOGLE_SHEET_URL;
   
   const RESOURCES_CSV_URL = SHEET_CSV_URL; 
   const ANNOUNCEMENTS_CSV_URL = SHEET_CSV_URL;
